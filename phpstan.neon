@@ -1,0 +1,19 @@
+parameters:
+    # Paths to run analysis on
+    paths:
+        - app/AAMailer
+    # The level 8 is the highest level
+    level: 8
+    ignoreErrors:
+        - message: '/Parameter #1 \$em of class [a-zA-Z0-9\\]* constructor expects Doctrine\\ORM\\EntityManagerInterface, Doctrine\\Persistence\\ObjectManager given./'
+          path: app/Providers/ExternalRepositoryServiceProvider.php
+    reportUnmatchedIgnoredErrors: false
+
+includes:
+    # Extensions
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/phpstan/phpstan-beberlei-assert/extension.neon
+    - ./vendor/phpstan/phpstan-doctrine/extension.neon
+    # Baseline
+    - ./phpstan-baseline.neon
+

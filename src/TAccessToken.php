@@ -4,6 +4,8 @@ namespace Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use DateTime;
+use function array_key_exists;
+use function in_array;
 
 trait TAccessToken
 {
@@ -23,8 +25,8 @@ trait TAccessToken
 
     public function can($ability): bool
     {
-        return \in_array('*', $this->abilities, true)
-            || \array_key_exists($ability, array_flip($this->abilities));
+        return in_array('*', $this->abilities, true)
+            || array_key_exists($ability, array_flip($this->abilities));
     }
 
     public function cant($ability): bool

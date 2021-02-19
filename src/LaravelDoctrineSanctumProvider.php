@@ -13,6 +13,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use LaravelDoctrine\ORM\IlluminateRegistry;
 
@@ -116,18 +117,18 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
     {
         if (null === $em) {
-            throw new \InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
+            throw new InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
         }
     }
 
     private function validateConfiguration(string $tokenModel): void
     {
         if (empty($tokenModel)) {
-            throw new \InvalidArgumentException('You have to configure "sanctum.doctrine.token"');
+            throw new InvalidArgumentException('You have to configure "sanctum.doctrine.token"');
         }
 
         if (!class_exists($tokenModel)) {
-            throw new \InvalidArgumentException(sprintf('Can not use doctrine orm model "%s", class does not exist.', $tokenModel));
+            throw new InvalidArgumentException(sprintf('Can not use doctrine orm model "%s", class does not exist.', $tokenModel));
         }
     }
 }
