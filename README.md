@@ -22,7 +22,7 @@ php artisan vendor:publish --tag="config" --provider="Bolivir\LaravelDoctrineSan
 
 # Configuration / Setup
 ### Creating the Access Token Model
-Start by creating your accessModel, and implement the interface 
+Start by creating your accessTokenModel, and implement the interface 
 ``IAccessToken``.<br>
 This package comes with a trait that defines all needed properties/methods, therefore you can choose to use the `TAccessToken` trait.<br>
 ```php
