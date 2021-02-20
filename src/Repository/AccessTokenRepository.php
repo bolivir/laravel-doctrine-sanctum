@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Laravel-Doctrine-Sanctum project.
+ * (c) Ricardo Mosselman <mosselmanricardo@gmail.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Bolivir\LaravelDoctrineSanctum\Repository;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
 use Doctrine\Persistence\ObjectManager;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\TransientToken;
 
@@ -24,8 +33,8 @@ class AccessTokenRepository implements IAccessTokenRepository
 
     public function createToken(ISanctumUser $user, string $name, array $abilities = ['*']): NewAccessToken
     {
-        /** @var IAccessToken $token */
         $plainTextToken = Str::random(80);
+        /** @var IAccessToken $token */
         $token = new $this->tokenModel();
         $token->changeCreatedAt(now());
         $token->changeName($name);
@@ -51,6 +60,8 @@ class AccessTokenRepository implements IAccessTokenRepository
         if ($accessToken = $repository->find($id)) {
             return hash_equals($accessToken->token(), hash('sha256', $token)) ? $accessToken : null;
         }
+
+        return null;
     }
 
     /**

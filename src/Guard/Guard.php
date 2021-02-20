@@ -1,10 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Laravel-Doctrine-Sanctum project.
+ * (c) Ricardo Mosselman <mosselmanricardo@gmail.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Bolivir\LaravelDoctrineSanctum\Guard;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Carbon\Carbon;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Factory as AuthenticationFactory;
 use Illuminate\Http\Request;
 
@@ -28,6 +38,8 @@ class Guard
 
     /**
      * Retrieve the authenticated user for the request.
+     *
+     * @returns ISanctumUser|Authenticatable
      */
     public function __invoke(Request $request)
     {
@@ -52,6 +64,7 @@ class Guard
 
             if ($this->supportsTokens($accessToken->owner())) {
                 $accessToken->changeLastUsedAt(now());
+
                 return $this->accessTokenRepository->updateAccessToken($accessToken);
             }
         }
@@ -59,11 +72,13 @@ class Guard
         return null;
     }
 
+    /** @param mixed $tokenable */
     protected function supportsTokens($tokenable = null): bool
     {
         return $tokenable && $tokenable instanceof ISanctumUser;
     }
 
+    /** @param mixed $owner */
     protected function hasValidProvider($owner): bool
     {
         if (null === $this->provider) {

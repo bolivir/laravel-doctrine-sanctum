@@ -3,6 +3,7 @@
     "description": "Laravel doctrine integration for the official laravel-sanctum package",
     "type": "library",
     "require": {
+        "php": "^7.4",
         "ext-json": "*",
         "laravel-doctrine/orm": "^1.7",
         "laravel/sanctum": "^2.9"
@@ -10,7 +11,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.18",
         "phpunit/phpunit": "^9.3.3",
-        "phpstan/phpstan-doctrine": "^0.12.32"
+        "phpstan/phpstan-doctrine": "^0.12.32",
+        "phpstan/phpstan": "0.12.x-dev",
+        "orchestra/testbench": "^6.0"
     },
     "license": "MIT",
     "authors": [
@@ -24,15 +27,24 @@
             "Bolivir\\LaravelDoctrineSanctum\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Bolivir\\LaravelDoctrineSanctum\\": "./tests"
+        }
+    },
     "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    },
     "scripts": {
-        "phpstan": "./vendor/bin/phpstan analyse --ansi",
+        "phpstan": "vendor/bin/phpstan analyse --ansi",
         "phpunit": "./vendor/bin/phpunit --colors=always",
         "phpcs": "./vendor/bin/php-cs-fixer fix --ansi",
         "coverage": "@phpunit --coverage-html=build/coverage",
         "verify": [
             "@phpcs --dry-run --diff",
-            "@phpunit",
+
             "@phpstan"
         ]
     }

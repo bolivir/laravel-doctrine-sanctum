@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Laravel-Doctrine-Sanctum project.
+ * (c) Ricardo Mosselman <mosselmanricardo@gmail.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
@@ -19,7 +28,7 @@ use LaravelDoctrine\ORM\IlluminateRegistry;
 
 class LaravelDoctrineSanctumProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
             __DIR__.'/Config/sanctum.php' => config_path('sanctum.php'),
@@ -38,7 +47,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         ];
     }
 
-    protected function createGuard($auth, $config)
+    protected function createGuard($auth, $config): RequestGuard
     {
         return new RequestGuard(
             new Guard(

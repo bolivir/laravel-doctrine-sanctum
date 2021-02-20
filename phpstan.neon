@@ -1,12 +1,11 @@
 parameters:
-    # Paths to run analysis on
     paths:
         - src
-    # The level 8 is the highest level
-    level: 8
+    inferPrivatePropertyTypeFromConstructor: true
+    level: 5
     reportUnmatchedIgnoredErrors: false
-
-includes:
-    # Baseline
-    - ./phpstan-baseline.neon
+    ignoreErrors:
+     - '#Application::refresh#'
+     - '#Authenticatable::withAccessToken#'
+     - '#createTransientToken\(\) should return#'
 
