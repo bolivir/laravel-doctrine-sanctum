@@ -1,11 +1,13 @@
 # Laravel Doctrine Sanctum
-Laravel doctrine integration for the official laravel-sanctum package.
+<h3>This package is in development!</h3>
+
+Laravel doctrine integration for the laravel-sanctum package.
 This package is an integration package so that the official laravel sanctum package works with doctrine as ORM.
 
 ## Versions
 
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
-:---------|:----------|:----------
+:-------|:----------|:----------
 ~1.0 | ^2.9 | ^1.7
 
 
@@ -46,6 +48,7 @@ class AccessToken implements IAccessToken
 }
 ```
 ### Updating the UserModel
+Your user model should implement the interface `ISanctumUser` ...
 TODO
 
 ### Creating the database table
