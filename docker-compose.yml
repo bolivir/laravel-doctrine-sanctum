@@ -1,0 +1,28 @@
+version: "3.1"
+services:
+    mysql:
+      image: mysql:5.7
+      container_name: laravel-doctrine-sanctum-mysql
+      working_dir: /application
+      environment:
+        - "MYSQL_DATABASE=laravel_doctrine_sanctum"
+        - "MYSQL_USER=default"
+        - "MYSQL_PASSWORD=secret"
+        - "MYSQL_ROOT_PASSWORD=root"
+      ports:
+        - "3306:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: laravel-doctrine-sanctum-webserver
+      working_dir: /application
+      ports:
+       - "80:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: laravel-doctrine-sanctum-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini

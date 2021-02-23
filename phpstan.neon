@@ -1,0 +1,11 @@
+parameters:
+    paths:
+        - src
+    inferPrivatePropertyTypeFromConstructor: true
+    level: 5
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+     - '#Application::refresh#'
+     - '#Authenticatable::withAccessToken#'
+     - '#createTransientToken\(\) should return#'
+
