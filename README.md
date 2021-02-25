@@ -26,14 +26,13 @@ php artisan vendor:publish --tag="config" --provider="Bolivir\LaravelDoctrineSan
 ### Creating the Access Token Model
 Start by creating your accessTokenModel, and implement the interface 
 ``IAccessToken``.<br>
-This package comes with a trait that defines all needed properties/methods, therefore you can choose to use the `TAccessToken` trait.<br>
 ```php
 class AccessToken implements IAccessToken
 {
     use TAccessToken;
 }
 ```
-If you want to define the implementation yourself, just implement the interface and dont use the trait.
+You can use the Trait `TAccessToken` or just implement the interface by your self.
 ```php
 class AccessToken implements IAccessToken
 {
@@ -48,11 +47,12 @@ class AccessToken implements IAccessToken
 }
 ```
 ### Updating the UserModel
-Your user model should implement the interface `ISanctumUser` ...
-TODO
+Your user model should implement the interface `ISanctumUser`. 
+You dont need to implement the `Authenticable` on your user model directly, it is required inside the `ISanctumUser`
+Now you can choose to use the trait `TAccessToken` or implement the interface yourself.
 
 ### Creating the database table
-Laravel sanctum uses database tables to store the access tokens. There are multiple methods available to generate the database table sql
+Laravel sanctum uses the database to store the access tokens. There are multiple options available to generate the database table sql
 - If you are using laravel migrations, run `migrations:diff` after the creation of your model and metadata (xml). Then execute the migration with `migrations:migrate`
 
 - Run the plain SQL thats available in this repository. See `Database/create_access_token_table.sql`
