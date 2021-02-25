@@ -1,8 +1,8 @@
 # Laravel Doctrine Sanctum
 <h3>This package is in development!</h3>
 Laravel Sanctum works by default via eloquent, this package makes it work with Doctrine-Laravel-ORM
-## Versions
 
+## Versions
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
 :-------|:----------|:----------
 ~1.0 | ^2.9 | ^1.7
