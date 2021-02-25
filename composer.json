@@ -44,7 +44,6 @@
         "coverage": "@phpunit --coverage-html=build/coverage",
         "verify": [
             "@phpcs --dry-run --diff",
-
             "@phpstan"
         ]
     }

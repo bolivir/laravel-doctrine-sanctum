@@ -13,8 +13,14 @@ namespace Tests\Bolivir\LaravelDoctrineSanctum\Fixtures;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\HasApiTokens;
+use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
-class TestUser implements ISanctumUser
+/**
+ * @ORM\Entity
+ */
+class TestUser implements ISanctumUser, Jsonable, Arrayable
 {
     use HasApiTokens;
 
@@ -40,6 +46,13 @@ class TestUser implements ISanctumUser
      * @var string
      */
     protected $email;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $password;
 
     public function toJson($options = 0)
     {
@@ -114,6 +127,13 @@ class TestUser implements ISanctumUser
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }

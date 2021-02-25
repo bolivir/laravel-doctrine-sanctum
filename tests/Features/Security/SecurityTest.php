@@ -16,20 +16,37 @@ use Tests\Bolivir\LaravelDoctrineSanctum\TestCase;
 
 class SecurityTest extends TestCase
 {
-    public function testLoginWithExpiredTokenShows302Status()
+    public function testApiLoginWithExpiredTokenShows401Status()
     {
         /** @var IAccessTokenRepository $accessTokenRepository */
         $user = $this->createUser();
         $accessTokenRepository = app()->get(IAccessTokenRepository::class);
-
         $token = $accessTokenRepository->createToken($user, 'phpunit');
         $currentUserToken = $token->accessToken;
-        $currentUserToken->setCreatedAt(new \DateTime('-365 days'));
+        $currentUserToken->changeCreatedAt(new \DateTime('-365 days'));
+
+        $accessTokenRepository->save($currentUserToken);
+
+        $this->getJson('/api/user', [
+            'Authorization' => 'Bearer '.$token->plainTextToken,
+        ])->assertStatus(401);
+    }
+
+    public function testWebLoginWithExpiredTokenShows302Status()
+    {
+        /** @var IAccessTokenRepository $accessTokenRepository */
+        $user = $this->createUser();
+        $accessTokenRepository = app()->get(IAccessTokenRepository::class);
+        $token = $accessTokenRepository->createToken($user, 'phpunit');
+        $currentUserToken = $token->accessToken;
+        $currentUserToken->changeCreatedAt(new \DateTime('-365 days'));
+
         $accessTokenRepository->save($currentUserToken);
 
         $response = $this->get('/api/user', [
             'Authorization' => 'Bearer '.$token->plainTextToken,
         ]);
+
         $response->assertStatus(302);
     }
 }

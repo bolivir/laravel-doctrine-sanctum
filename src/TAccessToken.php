@@ -13,21 +13,59 @@ namespace Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 trait TAccessToken
 {
-    protected int $id;
+    /**
+     * @ORM\Column(type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int|null
+     */
+    protected ?int $id = null;
 
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
     protected string $name;
 
+    /**
+     * @ORM\Column(type="string", unique=true)
+     *
+     * @var string
+     */
     protected string $token;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     *
+     * @var array
+     */
     protected array $abilities = [];
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime|null
+     */
     protected DateTime $lastUsedAt;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime|null
+     */
     protected DateTime $createdAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser", cascade={"persist"})
+     *
+     * @var ISanctumUser|null
+     */
     protected ISanctumUser $owner;
 
     public function can($ability): bool
@@ -41,7 +79,7 @@ trait TAccessToken
         return !$this->can($ability);
     }
 
-    public function id(): int
+    public function id(): ?int
     {
         return $this->id;
     }

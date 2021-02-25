@@ -12,13 +12,15 @@ declare(strict_types=1);
 namespace Tests\Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\LaravelDoctrineSanctumProvider;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\SanctumServiceProvider;
 use LaravelDoctrine\ORM\DoctrineServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestAccessTokenRepository;
+use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestToken;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestUser;
 
 class TestCase extends OrchestraTestCase
@@ -26,15 +28,15 @@ class TestCase extends OrchestraTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
+        $this->createDatabase();
     }
 
     protected function getPackageProviders($app)
     {
         return [
             DoctrineServiceProvider::class,
-            LaravelDoctrineSanctumProvider::class,
             SanctumServiceProvider::class,
+            LaravelDoctrineSanctumProvider::class,
         ];
     }
 
@@ -44,12 +46,13 @@ class TestCase extends OrchestraTestCase
         $config = $app['config'];
 
         $config->set('doctrine.managers.default.paths', [
-            __DIR__.'/Fixtures/Model',
+            __DIR__.'/Fixtures/',
         ]);
 
         $config->set('auth.providers.users.driver', 'doctrine');
-        $config->set('sanctum.orm.models.token', TestAccessTokenRepository::class);
-        $config->set('sanctum.orm.models.user', TestUser::class);
+        $config->set('sanctum.doctrine.models.token', TestToken::class);
+        $config->set('sanctum.doctrine.models.user', TestUser::class);
+        $config->set('sanctum.doctrine.manager', 'default');
         $config->set('sanctum.expiration', 3600);
     }
 
@@ -80,12 +83,29 @@ class TestCase extends OrchestraTestCase
 
     protected function getRepository(string $className): ObjectRepository
     {
-        return $this->getEntityManager($className)->getRepository($className);
+        $manager = $this->getEntityManager($className);
+
+        return $manager->getRepository($className);
     }
 
     protected function getEntityManager($className): ObjectManager
     {
-        //dd($className);
         return app()->get('registry')->getManagerForClass($className);
+    }
+
+    private function createDatabase()
+    {
+        $registry = app()->get('registry');
+
+        foreach ($registry->getManagers() as $manager) {
+            $meta = $manager->getMetadataFactory()->getAllMetadata();
+            $tool = new SchemaTool($manager);
+            try {
+                $tool->dropSchema($meta);
+                $tool->createSchema($meta);
+            } catch (ToolsException $e) {
+                throw new \InvalidArgumentException("Database schema is not buildable: {$e->getMessage()}", $e->getCode(), $e);
+            }
+        }
     }
 }
