@@ -1,9 +1,6 @@
 # Laravel Doctrine Sanctum
 <h3>This package is in development!</h3>
-
-Laravel doctrine integration for the laravel-sanctum package.
-This package is an integration package so that the official laravel sanctum package works with doctrine as ORM.
-
+Laravel Sanctum works by default via eloquent, this package makes it work with Doctrine-Laravel-ORM
 ## Versions
 
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
@@ -58,5 +55,27 @@ Laravel sanctum uses the database to store the access tokens. There are multiple
 - Run the plain SQL thats available in this repository. See `Database/create_access_token_table.sql`
 
 
-### Customization
-Todo ...
+Ready to use
+---
+Implement your login logic and start creating access tokens on succesfull login.
+
+```php
+class MyLoginService
+{       
+      .......
+      .......
+      public function login() 
+      {
+        ....
+        ....
+        $accessToken = $this->tokenRepository->createToken($user, 'tokenName');
+      }
+}
+```
+
+See the WIKI for more detailed steps.
+---
+https://github.com/bolivir/laravel-doctrine-sanctum/wiki
+
+License
+---
