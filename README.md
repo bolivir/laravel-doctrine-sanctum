@@ -76,6 +76,3 @@ class MyLoginService
 See the WIKI for more detailed steps.
 ---
 https://github.com/bolivir/laravel-doctrine-sanctum/wiki
-
-License
----
