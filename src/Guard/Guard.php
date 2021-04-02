@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Factory as AuthenticationFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class Guard
 {
