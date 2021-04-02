@@ -37,13 +37,6 @@
         "sort-packages": true,
         "preferred-install": "dist"
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Bolivir\\LaravelDoctrineSanctum\\LaravelDoctrineSanctumProvider"
-            ]
-        }
-    },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse --ansi",
         "phpunit": "./vendor/bin/phpunit --colors=always",
