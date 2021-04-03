@@ -1,6 +1,7 @@
 # Laravel Doctrine Sanctum
 
-![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=master)
+![example branch parameter](https://github.com/bolivir/laravel-doctrine-sanctum/actions/workflows/ci.yml/badge.svg?branch=master)
+
 <h3>This package is in development!</h3>
 The original Laravel Sanctum works via eloquent, this package makes it work with laravel-doctrine/orm package (https://github.com/laravel-doctrine/orm)
 
