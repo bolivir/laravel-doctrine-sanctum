@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 
 trait HasApiTokens
 {
-    protected IAccessToken $accessToken;
+    protected ?IAccessToken $accessToken = null;
 
     /** @var Collection<IAccessToken> */
     protected Collection $accessTokens;
@@ -26,7 +26,7 @@ trait HasApiTokens
         return $this->accessToken ? $this->accessToken->can($ability) : false;
     }
 
-    public function currentAccessToken(): IAccessToken
+    public function currentAccessToken(): ?IAccessToken
     {
         return $this->accessToken;
     }
@@ -45,6 +45,9 @@ trait HasApiTokens
     public function revokeToken(IAccessToken $token): void
     {
         $this->accessTokens->removeElement($token);
+        if ($this->accessToken === $token) {
+            $this->accessToken = null;
+        }
     }
 
     public function findToken(string $token): ?IAccessToken

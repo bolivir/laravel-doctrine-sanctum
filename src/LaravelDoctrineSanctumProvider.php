@@ -28,11 +28,18 @@ use LaravelDoctrine\ORM\IlluminateRegistry;
 
 class LaravelDoctrineSanctumProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/sanctum_orm.php', 'sanctum_orm'
+        );
+    }
+
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.'/Config/sanctum.php' => config_path('sanctum.php'),
-        ]);
+            __DIR__.'/../config/sanctum_orm.php' => config_path('sanctum_orm.php'),
+        ], 'config');
 
         $this->configureEntityManager();
         $this->configureGuard();
@@ -69,9 +76,9 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function configureTargetEntity(): void
     {
-        $tokenModel = config('sanctum.doctrine.models.token');
-        $userModel = config('sanctum.doctrine.models.user');
-        $managerName = config('sanctum.doctrine.manager');
+        $tokenModel = config('sanctum_orm.doctrine.models.token');
+        $userModel = config('sanctum_orm.doctrine.models.user');
+        $managerName = config('sanctum_orm.doctrine.manager');
 
         config([
             'doctrine.mappings' => [],
@@ -114,7 +121,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
     {
         /** @var IlluminateRegistry $registry */
         $registry = $this->app->get('registry');
-        $tokenModel = (string) config('sanctum.doctrine.models.token');
+        $tokenModel = (string) config('sanctum_orm.doctrine.models.token');
 
         $this->validateConfiguration($tokenModel);
         $em = $registry->getManagerForClass($tokenModel);
