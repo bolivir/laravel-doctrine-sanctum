@@ -5,7 +5,7 @@ Laravel Sanctum works by default via eloquent, this package makes it work with D
 ## Versions
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
 :-------|:----------|:----------
-~1.0 | ^2.9 | ^1.7
+~1.0 | ^2.0 | ^1.0
 
 
 # Installation
