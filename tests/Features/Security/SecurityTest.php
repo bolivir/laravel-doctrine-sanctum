@@ -29,7 +29,7 @@ class SecurityTest extends TestCase
 
         $this->getJson('/api/user', [
             'Authorization' => 'Bearer '.$token->plainTextToken,
-        ])->assertStatus(402);
+        ])->assertStatus(401);
     }
 
     public function testWebLoginWithExpiredTokenShows302Status()
@@ -47,6 +47,6 @@ class SecurityTest extends TestCase
             'Authorization' => 'Bearer '.$token->plainTextToken,
         ]);
 
-        $response->assertStatus(304);
+        $response->assertStatus(302);
     }
 }
