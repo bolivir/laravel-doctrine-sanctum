@@ -18,13 +18,13 @@ use Doctrine\ORM\Mapping as ORM;
 trait TAccessToken
 {
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="guid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="UUID")
      *
      * @var int|null
      */
-    protected ?int $id = null;
+    protected ?string $id = null;
 
     /**
      * @ORM\Column(type="string")
@@ -79,7 +79,7 @@ trait TAccessToken
         return !$this->can($ability);
     }
 
-    public function id(): ?int
+    public function id(): ?string
     {
         return $this->id;
     }

@@ -16,7 +16,7 @@ use Laravel\Sanctum\Contracts\HasAbilities;
 
 interface IAccessToken extends HasAbilities
 {
-    public function id(): ?int;
+    public function id(): ?string;
 
     public function changeLastUsedAt(DateTime $date): void;
 
