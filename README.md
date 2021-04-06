@@ -1,11 +1,14 @@
 # Laravel Doctrine Sanctum
+
+![example branch parameter](https://github.com/bolivir/laravel-doctrine-sanctum/actions/workflows/ci.yml/badge.svg?branch=master)
+
 <h3>This package is in development!</h3>
-Laravel Sanctum works by default via eloquent, this package makes it work with Doctrine-Laravel-ORM
+The original Laravel Sanctum works via eloquent, this package makes it work with laravel-doctrine/orm package (https://github.com/laravel-doctrine/orm)
 
 ## Versions
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
 :-------|:----------|:----------
-~1.0 | ^2.9 | ^1.7
+~1.0 | ^2.0 | ^1.0
 
 
 # Installation
