@@ -40,7 +40,7 @@
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse --ansi",
         "phpunit": "./vendor/bin/phpunit --colors=always",
-        "phpcs": "./vendor/bin/php-cs-fixer fix --ansi",
+        "phpcs": "./vendor/bin/php-cs-fixer fix --ansi --config .php-cs-fixer.php",
         "coverage": "@phpunit --coverage-html=build/coverage",
         "verify": [
             "@phpcs --dry-run --diff",
