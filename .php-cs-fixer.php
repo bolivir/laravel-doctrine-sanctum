@@ -1,4 +1,7 @@
 <?php
+
+use PhpCsFixer\Config;
+
 $header = <<<'HEADER'
 This file is part of the Laravel-Doctrine-Sanctum project.
 (c) Ricardo Mosselman <mosselmanricardo@gmail.com>
@@ -10,7 +13,9 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude(__DIR__.'/vendor');
 
-return PhpCsFixer\Config::create()
+$config = new Config();
+
+$config
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP71Migration' => true,
@@ -98,3 +103,5 @@ return PhpCsFixer\Config::create()
         'void_return' => false,
     ])
     ->setFinder($finder);
+
+return $config;
