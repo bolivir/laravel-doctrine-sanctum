@@ -36,7 +36,7 @@ You can use the Trait `TAccessToken` or just implement the interface by your sel
 ```php
 class AccessToken implements IAccessToken
 {
-      protected int $id;
+      protected string $id;
     
       protected string $name;
     
@@ -54,8 +54,6 @@ Now you can choose to use the trait `TAccessToken` or implement the interface yo
 ### Creating the database table
 Laravel sanctum uses the database to store the access tokens. There are multiple options available to generate the database table sql
 - If you are using laravel migrations, run `migrations:diff` after the creation of your model and metadata (xml). Then execute the migration with `migrations:migrate`
-
-- Run the plain SQL thats available in this repository. See `Database/create_access_token_table.sql`
 
 
 Ready to use
