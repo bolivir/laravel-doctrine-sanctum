@@ -2,7 +2,6 @@
 
 ![example branch parameter](https://github.com/bolivir/laravel-doctrine-sanctum/actions/workflows/ci.yml/badge.svg?branch=master)
 
-<h3>This package is in development!</h3>
 The original Laravel Sanctum works via eloquent, this package makes it work with laravel-doctrine/orm package (https://github.com/laravel-doctrine/orm)
 
 ## Versions
