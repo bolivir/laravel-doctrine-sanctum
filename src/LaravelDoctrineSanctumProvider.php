@@ -17,7 +17,6 @@ use Bolivir\LaravelDoctrineSanctum\Guard\Guard;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
@@ -25,7 +24,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use InvalidArgumentException;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-use LaravelDoctrine\ORM\IlluminateRegistry;
 
 class LaravelDoctrineSanctumProvider extends ServiceProvider
 {
