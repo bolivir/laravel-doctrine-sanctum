@@ -14,18 +14,18 @@ namespace Bolivir\LaravelDoctrineSanctum\Repository;
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\TransientToken;
 
 class AccessTokenRepository implements IAccessTokenRepository
 {
-    protected ObjectManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $tokenModel;
 
-    public function __construct(ObjectManager $em, string $tokenModel)
+    public function __construct(EntityManagerInterface $em, string $tokenModel)
     {
         $this->em = $em;
         $this->tokenModel = $tokenModel;

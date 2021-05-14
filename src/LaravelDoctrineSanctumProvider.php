@@ -16,6 +16,7 @@ use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\Guard\Guard;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Http\Kernel;
@@ -119,22 +120,16 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function createAccessTokenRepository(): AccessTokenRepository
     {
-        /** @var IlluminateRegistry $registry */
-        $registry = $this->app->get('registry');
+        /** @var EntityManagerInterface $em */
+        $em = $this->app->make(EntityManagerInterface::class);
         $tokenModel = (string) config('sanctum_orm.doctrine.models.token');
 
         $this->validateConfiguration($tokenModel);
-        $em = $registry->getManagerForClass($tokenModel);
-        $this->ensureValidEntityManager($em, $tokenModel);
 
-        return new AccessTokenRepository($em, $tokenModel);
-    }
-
-    private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
-    {
-        if (null === $em) {
-            throw new InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
-        }
+        return new AccessTokenRepository(
+            $em,
+            $tokenModel
+        );
     }
 
     private function validateConfiguration(string $tokenModel): void
