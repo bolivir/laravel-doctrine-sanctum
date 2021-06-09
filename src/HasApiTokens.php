@@ -40,6 +40,7 @@ trait HasApiTokens
     public function revokeAllAccessTokens(): void
     {
         $this->accessTokens->clear();
+        $this->accessToken = null;
     }
 
     public function revokeToken(IAccessToken $token): void
