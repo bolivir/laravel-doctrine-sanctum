@@ -14,21 +14,24 @@ namespace Bolivir\LaravelDoctrineSanctum\Repository;
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\TransientToken;
 
 class AccessTokenRepository implements IAccessTokenRepository
 {
-    protected ObjectManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $tokenModel;
 
-    public function __construct(ObjectManager $em, string $tokenModel)
+    protected int $unusedTokenExpiration;
+
+    public function __construct(EntityManagerInterface $em, string $tokenModel, int $unusedTokenExpiration = 0)
     {
         $this->em = $em;
         $this->tokenModel = $tokenModel;
+        $this->unusedTokenExpiration = $unusedTokenExpiration;
     }
 
     public function createToken(ISanctumUser $user, string $name, array $abilities = ['*']): NewAccessToken
@@ -65,6 +68,29 @@ class AccessTokenRepository implements IAccessTokenRepository
     }
 
     /**
+     * @return IAccessToken[]|null
+     */
+    public function findUnusedTokens(): ?array
+    {
+        if ($this->unusedTokenExpiration > 0) {
+            $tokens = $this->em
+                ->createQueryBuilder()
+                ->where("last_used_at > DATESUB(CURRENT_DATE(), {$this->unusedTokenExpiration}, 'MINUTE')")
+                ->orderBy('last_used_at', 'DESC')
+                ->getQuery()
+                ->getResult();
+
+            if (!\is_array($tokens)) {
+                return [];
+            }
+
+            return array_filter($tokens, fn ($token) => $token instanceof IAccessToken);
+        }
+
+        return [];
+    }
+
+    /**
      * @param Authenticatable|ISanctumUser $user
      */
     public function createTransientToken($user): ?ISanctumUser
@@ -81,6 +107,12 @@ class AccessTokenRepository implements IAccessTokenRepository
         $this->save($token);
 
         return $token->owner();
+    }
+
+    public function remove(IAccessToken $token): void
+    {
+        $this->em->remove($token);
+        $this->em->flush();
     }
 
     public function save(IAccessToken $token): void
