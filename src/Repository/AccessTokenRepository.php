@@ -72,8 +72,8 @@ class AccessTokenRepository implements IAccessTokenRepository
         if ($this->unusedTokenTTL > 0) {
             $result = $this->em
                 ->createQueryBuilder()
-                ->delete()
-                ->where("last_used_at < DATESUB(CURRENT_DATE(), {$this->unusedTokenTTL}, 'MINUTE')")
+                ->delete($this->tokenModel, 'ac')
+                ->where("ac.lastUsedAt < DATESUB(CURRENT_DATE(), {$this->unusedTokenTTL}, 'MINUTE')")
                 ->getQuery()
                 ->execute();
 
