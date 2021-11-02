@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Commands;
 
-use Bolivir\LaravelDoctrineSanctum\Commands\ExpireUnusedTokensCommand;
+use Bolivir\LaravelDoctrineSanctum\Commands\DeleteUnusedTokensCommand;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\AbstractQuery;
@@ -42,7 +42,7 @@ class ExpireUnusedTokensCommandTest extends TestCase
     /** @var IAccessTokenRepository */
     private $tokenRepository;
 
-    private ExpireUnusedTokensCommand $expireUnusedTokensCommand;
+    private DeleteUnusedTokensCommand $deleteUnusedTokensCommand;
 
     /**
      * @var IAccessTokenRepository|mixed|MockObject
@@ -70,7 +70,7 @@ class ExpireUnusedTokensCommandTest extends TestCase
             1
         );
 
-        $this->expireUnusedTokensCommand = new ExpireUnusedTokensCommand();
+        $this->deleteUnusedTokensCommand = new DeleteUnusedTokensCommand();
 
         $this->tokenRepositoryMock = $this->createMock(IAccessTokenRepository::class);
     }
@@ -123,11 +123,11 @@ class ExpireUnusedTokensCommandTest extends TestCase
             ->with('<info>3 unused tokens found and deleted.</info>');
 
         $this->setProtectedProperty(
-            $this->expireUnusedTokensCommand,
+            $this->deleteUnusedTokensCommand,
             'output',
             $outputStyle
         );
 
-        $this->expireUnusedTokensCommand->handle($this->tokenRepositoryMock);
+        $this->deleteUnusedTokensCommand->handle($this->tokenRepositoryMock);
     }
 }

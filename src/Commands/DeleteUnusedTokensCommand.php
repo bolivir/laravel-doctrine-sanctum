@@ -14,16 +14,14 @@ namespace Bolivir\LaravelDoctrineSanctum\Commands;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Illuminate\Console\Command;
 
-class ExpireUnusedTokensCommand extends Command
+class DeleteUnusedTokensCommand extends Command
 {
-    protected $output;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sanctum_orm:expire-unused-tokens';
+    protected $signature = 'sanctum_orm:delete-unused-tokens';
 
     public function handle(IAccessTokenRepository $repository)
     {
