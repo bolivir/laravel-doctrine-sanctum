@@ -22,16 +22,13 @@ interface IAccessTokenRepository
 
     public function findToken(string $token): ?IAccessToken;
 
-    /** @return IAccessToken[]|null */
-    public function findUnusedTokens(): ?array;
+    public function deleteUnusedTokens(): ?int;
 
     /** @param Authenticatable|ISanctumUser $user */
     public function createTransientToken($user): ?ISanctumUser;
 
     /** @return Authenticatable|ISanctumUser */
     public function updateAccessToken(IAccessToken $token);
-
-    public function remove(IAccessToken $token): void;
 
     public function save(IAccessToken $token): void;
 }

@@ -67,27 +67,22 @@ class AccessTokenRepository implements IAccessTokenRepository
         return null;
     }
 
-    /**
-     * @return IAccessToken[]|null
-     */
-    public function findUnusedTokens(): ?array
+    public function deleteUnusedTokens(): ?int
     {
         if ($this->unusedTokenExpiration > 0) {
-            $tokens = $this->em
+            $result = $this->em
                 ->createQueryBuilder()
-                ->where("last_used_at > DATESUB(CURRENT_DATE(), {$this->unusedTokenExpiration}, 'MINUTE')")
-                ->orderBy('last_used_at', 'DESC')
+                ->delete()
+                ->where("last_used_at < DATESUB(CURRENT_DATE(), {$this->unusedTokenExpiration}, 'MINUTE')")
                 ->getQuery()
-                ->getResult();
+                ->execute();
 
-            if (!\is_array($tokens)) {
-                return [];
+            if (is_numeric($result)) {
+                return (int) $result;
             }
-
-            return array_filter($tokens, fn ($token) => $token instanceof IAccessToken);
         }
 
-        return [];
+        return null;
     }
 
     /**
@@ -107,12 +102,6 @@ class AccessTokenRepository implements IAccessTokenRepository
         $this->save($token);
 
         return $token->owner();
-    }
-
-    public function remove(IAccessToken $token): void
-    {
-        $this->em->remove($token);
-        $this->em->flush();
     }
 
     public function save(IAccessToken $token): void

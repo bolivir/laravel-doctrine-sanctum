@@ -16,6 +16,8 @@ use Illuminate\Console\Command;
 
 class ExpireUnusedTokensCommand extends Command
 {
+    protected $output;
+
     /**
      * The name and signature of the console command.
      *
@@ -25,10 +27,11 @@ class ExpireUnusedTokensCommand extends Command
 
     public function handle(IAccessTokenRepository $repository)
     {
-        $tokens = $repository->findUnusedTokens();
+        $expiredTokens = $repository->deleteUnusedTokens();
 
-        foreach ($tokens as $token) {
-            $repository->remove($token);
-        }
+        $this->info(sprintf(
+            '%s unused tokens found and deleted.',
+            $expiredTokens ?: 'No'
+        ));
     }
 }

@@ -17,7 +17,10 @@ use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Illuminate\Console\OutputStyle;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestToken;
 use Tests\Bolivir\LaravelDoctrineSanctum\TestCase;
 
@@ -30,11 +33,6 @@ class ExpireUnusedTokensCommandTest extends TestCase
      * @var QueryBuilder|MockObject
      */
     private $queryBuilder;
-
-    /**
-     * @var MockObject|TestToken
-     */
-    private $testToken;
 
     /**
      * @var AbstractQuery|MockObject
@@ -57,14 +55,13 @@ class ExpireUnusedTokensCommandTest extends TestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->queryBuilder = $this->getMockBuilder(QueryBuilder::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['where', 'orderBy', 'getQuery'])
+            ->onlyMethods(['delete', 'where', 'getQuery'])
             ->getMock();
+
+        $this->queryBuilder
+            ->method('delete')->willReturnSelf();
         $this->queryBuilder
             ->method('where')->willReturnSelf();
-        $this->queryBuilder
-            ->method('orderBy')->willReturnSelf();
-
-        $this->testToken = $this->createMock(TestToken::class);
 
         $this->query = $this->createMock(AbstractQuery::class);
         $this->tokenRepository = new AccessTokenRepository(
@@ -81,8 +78,8 @@ class ExpireUnusedTokensCommandTest extends TestCase
     public function testGetUnusedTokens(): void
     {
         $this->query
-            ->method('getResult')
-            ->willReturn([]);
+            ->method('execute')
+            ->willReturn(3);
 
         $this->queryBuilder
             ->method('getQuery')
@@ -94,24 +91,42 @@ class ExpireUnusedTokensCommandTest extends TestCase
             ->method('createQueryBuilder')
             ->willReturn($this->queryBuilder);
 
-        $tokens = $this->tokenRepository->findUnusedTokens();
-        $this->assertIsArray($tokens);
+        $result = $this->tokenRepository->deleteUnusedTokens();
+        $this->assertIsInt($result);
     }
 
     public function testExpireUnusedTokens(): void
     {
         $this->tokenRepositoryMock
-            ->method('findUnusedTokens')
-            ->willReturn([
-                $this->testToken,
-                $this->testToken,
-                $this->testToken,
-            ]);
+            ->method('deleteUnusedTokens')
+            ->willReturn(3);
 
         $this->tokenRepositoryMock
-            ->expects($this->exactly(3))
-            ->method('remove')
-            ->with($this->testToken);
+            ->expects($this->once())
+            ->method('deleteUnusedTokens');
+
+        $inputInterface = $this->getMockBuilder(InputInterface::class)
+            ->onlyMethods([])
+            ->getMock();
+
+        $outputStyle = $this->getMockBuilder(OutputStyle::class)
+            ->setConstructorArgs([
+                $inputInterface,
+                new NullOutput(),
+            ])
+            ->onlyMethods(['writeLn'])
+            ->getMock();
+
+        $outputStyle
+            ->expects($this->once())
+            ->method('writeLn')
+            ->with('<info>3 unused tokens found and deleted.</info>');
+
+        $this->setProtectedProperty(
+            $this->expireUnusedTokensCommand,
+            'output',
+            $outputStyle
+        );
 
         $this->expireUnusedTokensCommand->handle($this->tokenRepositoryMock);
     }
