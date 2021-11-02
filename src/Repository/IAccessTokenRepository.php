@@ -22,6 +22,8 @@ interface IAccessTokenRepository
 
     public function findToken(string $token): ?IAccessToken;
 
+    public function deleteUnusedTokens(): int;
+
     /** @param Authenticatable|ISanctumUser $user */
     public function createTransientToken($user): ?ISanctumUser;
 

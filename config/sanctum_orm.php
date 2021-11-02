@@ -22,4 +22,12 @@ return [
         ],
         'manager' => 'default',
     ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | Delete tokens that haven't been used for a certain time ( in minutes ).
+   | Setting it to 0, means it will never be deleted if unused.
+   |--------------------------------------------------------------------------
+   */
+    'unused_token_ttl' => 0,
 ];

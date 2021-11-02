@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 namespace Bolivir\LaravelDoctrineSanctum;
 
+use Bolivir\LaravelDoctrineSanctum\Commands\DeleteUnusedTokensCommand;
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\Guard\Guard;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Http\Kernel;
@@ -45,6 +47,12 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $this->configureGuard();
         $this->configureMiddleware();
         $this->configureTargetEntity();
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                DeleteUnusedTokensCommand::class,
+            ]);
+        }
     }
 
     public function provides(): array
@@ -122,12 +130,14 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         /** @var IlluminateRegistry $registry */
         $registry = $this->app->get('registry');
         $tokenModel = (string) config('sanctum_orm.doctrine.models.token');
+        $unusedTokenTTL = (int) config('sanctum_orm.unused_token_ttl', 0);
 
         $this->validateConfiguration($tokenModel);
+        /** @var EntityManagerInterface $em */
         $em = $registry->getManagerForClass($tokenModel);
         $this->ensureValidEntityManager($em, $tokenModel);
 
-        return new AccessTokenRepository($em, $tokenModel);
+        return new AccessTokenRepository($em, $tokenModel, $unusedTokenTTL);
     }
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void

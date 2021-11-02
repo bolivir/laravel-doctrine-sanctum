@@ -13,7 +13,7 @@ namespace Tests\Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\LaravelDoctrineSanctumProvider;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestUser;
 
 class LaravelDoctrineSanctumProviderTest extends TestCase
@@ -27,6 +27,6 @@ class LaravelDoctrineSanctumProviderTest extends TestCase
     public function testDoctrineConfiguration()
     {
         $em = app()->get('registry')->getManagerForClass(TestUser::class);
-        $this->assertInstanceOf(ObjectManager::class, $em);
+        $this->assertInstanceOf(EntityManagerInterface::class, $em);
     }
 }

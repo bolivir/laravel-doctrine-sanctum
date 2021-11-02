@@ -14,21 +14,24 @@ namespace Bolivir\LaravelDoctrineSanctum\Repository;
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\TransientToken;
 
 class AccessTokenRepository implements IAccessTokenRepository
 {
-    protected ObjectManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $tokenModel;
 
-    public function __construct(ObjectManager $em, string $tokenModel)
+    protected int $unusedTokenTTL;
+
+    public function __construct(EntityManagerInterface $em, string $tokenModel, int $unusedTokenTTL = 0)
     {
         $this->em = $em;
         $this->tokenModel = $tokenModel;
+        $this->unusedTokenTTL = $unusedTokenTTL;
     }
 
     public function createToken(ISanctumUser $user, string $name, array $abilities = ['*']): NewAccessToken
@@ -62,6 +65,24 @@ class AccessTokenRepository implements IAccessTokenRepository
         }
 
         return null;
+    }
+
+    public function deleteUnusedTokens(): int
+    {
+        if ($this->unusedTokenTTL > 0) {
+            $result = $this->em
+                ->createQueryBuilder()
+                ->delete()
+                ->where("last_used_at < DATESUB(CURRENT_DATE(), {$this->unusedTokenTTL}, 'MINUTE')")
+                ->getQuery()
+                ->execute();
+
+            if (is_numeric($result)) {
+                return (int) $result;
+            }
+        }
+
+        return 0;
     }
 
     /**

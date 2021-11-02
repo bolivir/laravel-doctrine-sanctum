@@ -93,6 +93,14 @@ class TestCase extends OrchestraTestCase
         return app()->get('registry')->getManagerForClass($className);
     }
 
+    protected function setProtectedProperty($object, $property, $value): void
+    {
+        $reflectedClass = new \ReflectionClass($object);
+        $reflection = $reflectedClass->getProperty($property);
+        $reflection->setAccessible(true);
+        $reflection->setValue($object, $value);
+    }
+
     private function createDatabase()
     {
         $registry = app()->get('registry');
