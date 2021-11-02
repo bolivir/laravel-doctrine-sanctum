@@ -29,5 +29,5 @@ return [
    | Setting it to 0, means it will never be deleted if unused.
    |--------------------------------------------------------------------------
    */
-    'delete_unused_tokens_after' => 0,
+    'unused_token_ttl' => 0,
 ];
