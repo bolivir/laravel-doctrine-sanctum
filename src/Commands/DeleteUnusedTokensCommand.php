@@ -23,13 +23,15 @@ class DeleteUnusedTokensCommand extends Command
      */
     protected $signature = 'sanctum_orm:delete-unused-tokens';
 
+    /**
+     * @var string
+     */
+    protected $description = 'Deletes unused tokens that are older than the TTL set in config.';
+
     public function handle(IAccessTokenRepository $repository)
     {
-        $expiredTokens = $repository->deleteUnusedTokens();
+        $deletedUnusedTokens = $repository->deleteUnusedTokens();
 
-        $this->info(sprintf(
-            '%s unused tokens found and deleted.',
-            $expiredTokens ?: 'No'
-        ));
+        $this->info("$deletedUnusedTokens unused tokens found and deleted.");
     }
 }

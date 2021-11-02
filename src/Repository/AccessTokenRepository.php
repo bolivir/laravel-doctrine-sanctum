@@ -25,13 +25,13 @@ class AccessTokenRepository implements IAccessTokenRepository
 
     protected string $tokenModel;
 
-    protected int $deleteUnusedTokensAfter;
+    protected int $unusedTokenTTL;
 
-    public function __construct(EntityManagerInterface $em, string $tokenModel, int $deleteUnusedTokensAfter = 0)
+    public function __construct(EntityManagerInterface $em, string $tokenModel, int $unusedTokenTTL = 0)
     {
         $this->em = $em;
         $this->tokenModel = $tokenModel;
-        $this->deleteUnusedTokensAfter = $deleteUnusedTokensAfter;
+        $this->unusedTokenTTL = $unusedTokenTTL;
     }
 
     public function createToken(ISanctumUser $user, string $name, array $abilities = ['*']): NewAccessToken
@@ -67,13 +67,13 @@ class AccessTokenRepository implements IAccessTokenRepository
         return null;
     }
 
-    public function deleteUnusedTokens(): ?int
+    public function deleteUnusedTokens(): int
     {
-        if ($this->deleteUnusedTokensAfter > 0) {
+        if ($this->unusedTokenTTL > 0) {
             $result = $this->em
                 ->createQueryBuilder()
                 ->delete()
-                ->where("last_used_at < DATESUB(CURRENT_DATE(), {$this->deleteUnusedTokensAfter}, 'MINUTE')")
+                ->where("last_used_at < DATESUB(CURRENT_DATE(), {$this->unusedTokenTTL}, 'MINUTE')")
                 ->getQuery()
                 ->execute();
 
@@ -82,7 +82,7 @@ class AccessTokenRepository implements IAccessTokenRepository
             }
         }
 
-        return null;
+        return 0;
     }
 
     /**

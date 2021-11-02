@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestToken;
 use Tests\Bolivir\LaravelDoctrineSanctum\TestCase;
 
-class ExpireUnusedTokensCommandTest extends TestCase
+class DeleteUnusedTokensCommandTest extends TestCase
 {
     /** @var EntityManagerInterface|MockObject */
     private $entityManager;
@@ -95,7 +95,7 @@ class ExpireUnusedTokensCommandTest extends TestCase
         $this->assertIsInt($result);
     }
 
-    public function testExpireUnusedTokens(): void
+    public function testDeleteUnusedTokens(): void
     {
         $this->tokenRepositoryMock
             ->method('deleteUnusedTokens')

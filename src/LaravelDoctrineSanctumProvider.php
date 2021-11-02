@@ -130,14 +130,14 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         /** @var IlluminateRegistry $registry */
         $registry = $this->app->get('registry');
         $tokenModel = (string) config('sanctum_orm.doctrine.models.token');
-        $deleteUnusedTokensAfter = (int) config('sanctum_orm.delete_unused_tokens_after', 0);
+        $unusedTokenTTL = (int) config('sanctum_orm.unused_token_ttl', 0);
 
         $this->validateConfiguration($tokenModel);
         /** @var EntityManagerInterface $em */
         $em = $registry->getManagerForClass($tokenModel);
         $this->ensureValidEntityManager($em, $tokenModel);
 
-        return new AccessTokenRepository($em, $tokenModel, $deleteUnusedTokensAfter);
+        return new AccessTokenRepository($em, $tokenModel, $unusedTokenTTL);
     }
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void

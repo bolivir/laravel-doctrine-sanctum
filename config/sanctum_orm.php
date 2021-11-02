@@ -26,7 +26,7 @@ return [
     /*
    |--------------------------------------------------------------------------
    | Delete tokens that haven't been used for a certain time ( in minutes ).
-   | setting it to 0, means it will never expire.
+   | Setting it to 0, means it will never be deleted if unused.
    |--------------------------------------------------------------------------
    */
     'delete_unused_tokens_after' => 0,
