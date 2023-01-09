@@ -172,7 +172,7 @@ jobs:
           fi
       - name: Upload test artifacts
         if: always()
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: phpunit-logs-php${{ matrix.php }}
           path: build/logs/phpunit
