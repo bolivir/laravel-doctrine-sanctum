@@ -42,7 +42,7 @@ jobs:
       - name: Install Composer
         run: wget -qO - https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_COMMIT/web/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
       - name: Cache Composer packages
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.5
         with:
           path: ~/.composer/cache
           key: composer-php${{ matrix.php }}-php-cs-fixer-${{ github.sha }}
@@ -55,7 +55,7 @@ jobs:
         run: |
           composer update --no-progress --no-suggest --ansi
       - name: Cache PHP-CS-Fixer results
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.5
         with:
           path: /var/cache/php-cs-fixer
           key: php-cs-fixer-php${{ matrix.php }}-${{ github.sha }}
@@ -95,7 +95,7 @@ jobs:
       - name: Install Composer
         run: wget -qO - https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_COMMIT/web/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
       - name: Cache Composer packages
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.5
         with:
           path: ~/.composer/cache
           key: composer-php${{ matrix.php }}-${{ github.sha }}
@@ -109,7 +109,7 @@ jobs:
           ln -s /tmp/bolivir/laravel-doctrine-sanctum/vendor vendor
           composer update --no-progress --no-suggest --ansi
       - name: Cache PHPStan results
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.5
         with:
           path: /tmp/phpstan
           key: phpstan-php${{ matrix.php }}-${{ github.sha }}
@@ -152,7 +152,7 @@ jobs:
       - name: Install Composer
         run: wget -qO - https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_COMMIT/web/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
       - name: Cache Composer packages
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.5
         with:
           path: ~/.composer/cache
           key: composer-php${{ matrix.php }}-${{ matrix.dependency-version }}-${{ github.sha }}
