@@ -11,10 +11,11 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.18 || ^3.0",
-        "phpunit/phpunit": "^9.3.3",
-        "phpstan/phpstan-doctrine": "^1.0.0",
+        "orchestra/testbench": "v7.0.0",
         "phpstan/phpstan": "^1.0.0",
-        "orchestra/testbench": "v7.0.0"
+        "phpstan/phpstan-doctrine": "^1.0.0",
+        "phpunit/phpunit": "^9.3.3",
+        "rector/rector": "dev-main"
     },
     "license": "MIT",
     "authors": [
