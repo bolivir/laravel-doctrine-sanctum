@@ -53,7 +53,7 @@ trait HasApiTokens
 
     public function findToken(string $token): ?IAccessToken
     {
-        if (false === strpos($token, '|')) {
+        if (!str_contains($token, '|')) {
             return $this->accessTokens->filter(function (IAccessToken $accessToken) use ($token) {
                 return $accessToken->token() === hash('sha256', $token);
             })->first();

@@ -54,7 +54,7 @@ class AccessTokenRepository implements IAccessTokenRepository
     {
         $repository = $this->em->getRepository($this->tokenModel);
 
-        if (false === strpos($token, '|')) {
+        if (!str_contains($token, '|')) {
             return $repository->findOneBy(['token' => hash('sha256', $token)]);
         }
 

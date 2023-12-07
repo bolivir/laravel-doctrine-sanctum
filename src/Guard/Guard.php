@@ -29,7 +29,7 @@ class Guard
 
     private IAccessTokenRepository $accessTokenRepository;
 
-    public function __construct(AuthenticationFactory $authenticationFactory, IAccessTokenRepository $accessTokenRepository, ?int $expiration = null, ?string $provider = null)
+    public function __construct(AuthenticationFactory $authenticationFactory, IAccessTokenRepository $accessTokenRepository, int $expiration = null, string $provider = null)
     {
         $this->authenticationFactory = $authenticationFactory;
         $this->accessTokenRepository = $accessTokenRepository;
