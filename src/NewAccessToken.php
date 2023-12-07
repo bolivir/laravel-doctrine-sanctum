@@ -17,13 +17,8 @@ use Illuminate\Contracts\Support\Jsonable;
 
 class NewAccessToken implements Arrayable, Jsonable
 {
-    public IAccessToken $accessToken;
-    public string $plainTextToken;
-
-    public function __construct(IAccessToken $accessToken, string $plainTextToken)
+    public function __construct(public IAccessToken $accessToken, public string $plainTextToken)
     {
-        $this->accessToken = $accessToken;
-        $this->plainTextToken = $plainTextToken;
     }
 
     public function toArray(): array

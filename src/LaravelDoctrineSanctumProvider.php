@@ -17,6 +17,7 @@ use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\Guard\Guard;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Illuminate\Auth\RequestGuard;
@@ -24,9 +25,9 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use InvalidArgumentException;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use LaravelDoctrine\ORM\IlluminateRegistry;
+use Ramsey\Uuid\Doctrine\UuidType;
 
 class LaravelDoctrineSanctumProvider extends ServiceProvider
 {
@@ -88,8 +89,16 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $userModel = config('sanctum_orm.doctrine.models.user');
         $managerName = config('sanctum_orm.doctrine.manager');
 
+        Type::addType('uuid', \Ramsey\Uuid\Doctrine\UuidType::class);
+
         config([
             'doctrine.mappings' => [],
+            'doctrine.custom_types' => array_merge(
+                [
+                    UuidType::NAME => UuidType::class,
+                ],
+                config('doctrine.custom_types', [])
+            ),
             'doctrine.resolve_target_entities' => array_merge(
                 [
                     IAccessToken::class => $tokenModel,
@@ -108,20 +117,16 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function configureEntityManager(): void
     {
-        $this->app->singleton(IAccessTokenRepository::class, function (Application $app) {
-            return $this->createAccessTokenRepository();
-        });
+        $this->app->singleton(IAccessTokenRepository::class, fn (Application $app) => $this->createAccessTokenRepository());
         $this->app->alias(IAccessTokenRepository::class, 'sanctum.orm.services.token');
     }
 
     private function configureGuard()
     {
         Auth::resolved(function ($auth) {
-            $auth->extend('sanctum', function ($app, $name, array $config) use ($auth) {
-                return tap($this->createGuard($auth, $config), function ($guard) {
-                    $this->app->refresh('request', $guard, 'setRequest');
-                });
-            });
+            $auth->extend('sanctum', fn ($app, $name, array $config) => tap($this->createGuard($auth, $config), function ($guard) {
+                $this->app->refresh('request', $guard, 'setRequest');
+            }));
         });
     }
 
@@ -142,19 +147,19 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
     {
-        if (null === $em) {
-            throw new InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
+        if (!$em instanceof \Doctrine\Persistence\ObjectManager) {
+            throw new \InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
         }
     }
 
     private function validateConfiguration(string $tokenModel): void
     {
-        if (empty($tokenModel)) {
-            throw new InvalidArgumentException('You have to configure "sanctum.doctrine.token"');
+        if ('' === $tokenModel || '0' === $tokenModel) {
+            throw new \InvalidArgumentException('You have to configure "sanctum.doctrine.token"');
         }
 
         if (!class_exists($tokenModel)) {
-            throw new InvalidArgumentException(sprintf('Can not use doctrine orm model "%s", class does not exist.', $tokenModel));
+            throw new \InvalidArgumentException(sprintf('Can not use doctrine orm model "%s", class does not exist.', $tokenModel));
         }
     }
 }

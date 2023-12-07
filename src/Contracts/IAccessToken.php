@@ -11,20 +11,19 @@ declare(strict_types=1);
 
 namespace Bolivir\LaravelDoctrineSanctum\Contracts;
 
-use DateTime;
 use Laravel\Sanctum\Contracts\HasAbilities;
 
 interface IAccessToken extends HasAbilities
 {
     public function id(): ?string;
 
-    public function changeLastUsedAt(DateTime $date): void;
+    public function changeLastUsedAt(\DateTime $date): void;
 
-    public function lastUsedAt(): ?DateTime;
+    public function lastUsedAt(): ?\DateTime;
 
-    public function changeCreatedAt(DateTime $date): void;
+    public function changeCreatedAt(\DateTime $date): void;
 
-    public function createdAt(): ?DateTime;
+    public function createdAt(): ?\DateTime;
 
     public function changeOwner(ISanctumUser $user): void;
 

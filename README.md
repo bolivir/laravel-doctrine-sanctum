@@ -8,7 +8,7 @@ The original Laravel Sanctum works via eloquent, this package makes it work with
 Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
 :-------|:----------|:----------
 ~1.0 | ^2.0 | ^1.0
-
+~2.0 | ^2.0 | ^2.0
 
 # Installation
 Start by installing the package with the following command:
