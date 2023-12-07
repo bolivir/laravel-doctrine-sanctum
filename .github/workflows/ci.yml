@@ -27,9 +27,6 @@ jobs:
           - '8.2'
       fail-fast: false
     timeout-minutes: 5
-    env:
-      PHP_CS_FIXER_FUTURE_MODE: '1'
-      PHP_CS_FIXER_VERSION: '^2.14'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
