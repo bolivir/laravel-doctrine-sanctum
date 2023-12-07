@@ -54,15 +54,11 @@ trait HasApiTokens
     public function findToken(string $token): ?IAccessToken
     {
         if (!str_contains($token, '|')) {
-            return $this->accessTokens->filter(function (IAccessToken $accessToken) use ($token) {
-                return $accessToken->token() === hash('sha256', $token);
-            })->first();
+            return $this->accessTokens->filter(fn (IAccessToken $accessToken) => $accessToken->token() === hash('sha256', $token))->first();
         }
 
         [$id, $token] = explode('|', $token, 2);
 
-        return $this->accessTokens->filter(function (IAccessToken $accessToken) use ($token) {
-            return hash_equals($accessToken->token(), hash('sha256', $token)) ? $accessToken : null;
-        })->first();
+        return $this->accessTokens->filter(fn (IAccessToken $accessToken) => hash_equals($accessToken->token(), hash('sha256', $token)) ? $accessToken : null)->first();
     }
 }

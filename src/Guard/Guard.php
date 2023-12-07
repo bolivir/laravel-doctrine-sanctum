@@ -21,20 +21,8 @@ use Illuminate\Support\Arr;
 
 class Guard
 {
-    private AuthenticationFactory $authenticationFactory;
-
-    private ?int $expiration;
-
-    private ?string $provider;
-
-    private IAccessTokenRepository $accessTokenRepository;
-
-    public function __construct(AuthenticationFactory $authenticationFactory, IAccessTokenRepository $accessTokenRepository, int $expiration = null, string $provider = null)
+    public function __construct(private AuthenticationFactory $authenticationFactory, private IAccessTokenRepository $accessTokenRepository, private ?int $expiration = null, private ?string $provider = null)
     {
-        $this->authenticationFactory = $authenticationFactory;
-        $this->accessTokenRepository = $accessTokenRepository;
-        $this->expiration = $expiration;
-        $this->provider = $provider;
     }
 
     /**
@@ -45,7 +33,7 @@ class Guard
     public function __invoke(Request $request)
     {
         foreach (Arr::wrap(config('sanctum.guard', 'web')) as $guard) {
-            if ($user = $this->authenticationFactory->guard($guard)->user()) {
+            if (($user = $this->authenticationFactory->guard($guard)->user()) !== null) {
                 return $this->supportsTokens($user)
                     ? $this->accessTokenRepository->createTransientToken($user)
                     : $user;
@@ -75,14 +63,12 @@ class Guard
         return null;
     }
 
-    /** @param mixed $tokenable */
-    protected function supportsTokens($tokenable = null): bool
+    protected function supportsTokens(mixed $tokenable = null): bool
     {
         return $tokenable && $tokenable instanceof ISanctumUser;
     }
 
-    /** @param mixed $owner */
-    protected function hasValidProvider($owner): bool
+    protected function hasValidProvider(mixed $owner): bool
     {
         if (null === $this->provider) {
             return true;

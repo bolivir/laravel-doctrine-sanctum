@@ -89,7 +89,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $userModel = config('sanctum_orm.doctrine.models.user');
         $managerName = config('sanctum_orm.doctrine.manager');
 
-        Type::addType('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
+        Type::addType('uuid', \Ramsey\Uuid\Doctrine\UuidType::class);
 
         config([
             'doctrine.mappings' => [],
@@ -117,20 +117,16 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function configureEntityManager(): void
     {
-        $this->app->singleton(IAccessTokenRepository::class, function (Application $app) {
-            return $this->createAccessTokenRepository();
-        });
+        $this->app->singleton(IAccessTokenRepository::class, fn (Application $app) => $this->createAccessTokenRepository());
         $this->app->alias(IAccessTokenRepository::class, 'sanctum.orm.services.token');
     }
 
     private function configureGuard()
     {
         Auth::resolved(function ($auth) {
-            $auth->extend('sanctum', function ($app, $name, array $config) use ($auth) {
-                return tap($this->createGuard($auth, $config), function ($guard) {
-                    $this->app->refresh('request', $guard, 'setRequest');
-                });
-            });
+            $auth->extend('sanctum', fn ($app, $name, array $config) => tap($this->createGuard($auth, $config), function ($guard) {
+                $this->app->refresh('request', $guard, 'setRequest');
+            }));
         });
     }
 
@@ -151,14 +147,14 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
     {
-        if (null === $em) {
+        if (!$em instanceof \Doctrine\Persistence\ObjectManager) {
             throw new \InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
         }
     }
 
     private function validateConfiguration(string $tokenModel): void
     {
-        if (empty($tokenModel)) {
+        if ('' === $tokenModel || '0' === $tokenModel) {
             throw new \InvalidArgumentException('You have to configure "sanctum.doctrine.token"');
         }
 

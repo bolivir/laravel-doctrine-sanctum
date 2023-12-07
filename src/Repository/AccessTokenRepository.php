@@ -21,17 +21,8 @@ use Laravel\Sanctum\TransientToken;
 
 class AccessTokenRepository implements IAccessTokenRepository
 {
-    protected EntityManagerInterface $em;
-
-    protected string $tokenModel;
-
-    protected int $unusedTokenTTL;
-
-    public function __construct(EntityManagerInterface $em, string $tokenModel, int $unusedTokenTTL = 0)
+    public function __construct(protected EntityManagerInterface $em, protected string $tokenModel, protected int $unusedTokenTTL = 0)
     {
-        $this->em = $em;
-        $this->tokenModel = $tokenModel;
-        $this->unusedTokenTTL = $unusedTokenTTL;
     }
 
     public function createToken(ISanctumUser $user, string $name, array $abilities = ['*']): NewAccessToken
