@@ -3,17 +3,19 @@
     "description": "Laravel doctrine integration for the official laravel-sanctum package",
     "type": "library",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "laravel-doctrine/orm": "^1.5 || ^1.0",
-        "laravel/sanctum": "^2.0"
+        "laravel-doctrine/orm": "^2.0.0",
+        "laravel/sanctum": "^v2.0",
+        "ramsey/uuid-doctrine": "^2.0.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.18 || ^3.0",
+        "orchestra/testbench": "v7.0.0",
+        "phpstan/phpstan": "^1.0.0",
+        "phpstan/phpstan-doctrine": "^1.0.0",
         "phpunit/phpunit": "^9.3.3",
-        "phpstan/phpstan-doctrine": "^0.12.32",
-        "phpstan/phpstan": "0.12.x-dev",
-        "orchestra/testbench": "^4.0 || ^6.0 || ^6.0"
+        "rector/rector": "dev-main"
     },
     "license": "MIT",
     "authors": [

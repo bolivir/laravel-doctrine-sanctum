@@ -16,6 +16,7 @@ use Bolivir\LaravelDoctrineSanctum\HasApiTokens;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 /**
  * @ORM\Entity
@@ -25,9 +26,13 @@ class TestUser implements ISanctumUser, Jsonable, Arrayable
     use HasApiTokens;
 
     /**
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Id
+     *
+     * @ORM\Column(type="uuid", unique=true)
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      *
      * @var string
      */

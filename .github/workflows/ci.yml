@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
-    types: [opened, reopened, edited, synchronize]
+    types: [opened, reopened, synchronize]
     branches:
       - master
 
@@ -24,12 +24,9 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.4'
+          - '8.2'
       fail-fast: false
     timeout-minutes: 5
-    env:
-      PHP_CS_FIXER_FUTURE_MODE: '1'
-      PHP_CS_FIXER_VERSION: '^2.14'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -78,7 +75,7 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.4'
+          - '8.2'
       fail-fast: false
     timeout-minutes: 5
     env:
@@ -131,10 +128,10 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.4'
+          - '8.2'
         dependency-version: [prefer-stable]
         include:
-          - php: '7.4'
+          - php: '8.2'
             dependency-version: prefer-stable
             coverage: true
       fail-fast: false

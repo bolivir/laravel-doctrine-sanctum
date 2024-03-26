@@ -14,15 +14,20 @@ namespace Bolivir\LaravelDoctrineSanctum;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 trait TAccessToken
 {
     /**
-     * @ORM\Column(type="guid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @var int|null
+     * @ORM\Column(type="uuid", unique=true)
+     *
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     *
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     *
+     * @var string|null
      */
     protected ?string $id = null;
 
@@ -52,14 +57,14 @@ trait TAccessToken
      *
      * @var \DateTime|null
      */
-    protected DateTime $lastUsedAt;
+    protected \DateTime $lastUsedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime|null
      */
-    protected DateTime $createdAt;
+    protected \DateTime $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser", cascade={"persist"})
@@ -84,22 +89,22 @@ trait TAccessToken
         return $this->id;
     }
 
-    public function changeCreatedAt(DateTime $date): void
+    public function changeCreatedAt(\DateTime $date): void
     {
         $this->createdAt = $date;
     }
 
-    public function createdAt(): ?DateTime
+    public function createdAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function changeLastUsedAt(DateTime $date): void
+    public function changeLastUsedAt(\DateTime $date): void
     {
         $this->lastUsedAt = $date;
     }
 
-    public function lastUsedAt(): ?DateTime
+    public function lastUsedAt(): ?\DateTime
     {
         return $this->lastUsedAt;
     }
