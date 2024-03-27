@@ -89,7 +89,9 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $userModel = config('sanctum_orm.doctrine.models.user');
         $managerName = config('sanctum_orm.doctrine.manager');
 
-        Type::addType('uuid', \Ramsey\Uuid\Doctrine\UuidType::class);
+        if (!Type::hasType('uuid')) {
+            Type::addType('uuid', UuidType::class);
+        }
 
         config([
             'doctrine.mappings' => [],
@@ -147,7 +149,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
     {
-        if (!$em instanceof \Doctrine\Persistence\ObjectManager) {
+        if (!$em instanceof ObjectManager) {
             throw new \InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
         }
     }
