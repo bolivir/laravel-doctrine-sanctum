@@ -89,7 +89,9 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $userModel = config('sanctum_orm.doctrine.models.user');
         $managerName = config('sanctum_orm.doctrine.manager');
 
-        Type::addType('uuid', \Ramsey\Uuid\Doctrine\UuidType::class);
+        if (!Type::hasType('uuid')) {
+            Type::addType('uuid', UuidType::class);
+        }
 
         config([
             'doctrine.mappings' => [],
