@@ -149,7 +149,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     private function ensureValidEntityManager(?ObjectManager $em, string $tokenModel): void
     {
-        if (!$em instanceof \Doctrine\Persistence\ObjectManager) {
+        if (!$em instanceof ObjectManager) {
             throw new \InvalidArgumentException(sprintf('Can not find valid Entity Manager for "%s" class.', $tokenModel));
         }
     }
