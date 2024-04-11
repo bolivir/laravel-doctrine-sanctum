@@ -22,6 +22,8 @@ interface IAccessTokenRepository
 
     public function findToken(string $token): ?IAccessToken;
 
+    public function deleteTokensByAbility(string $ability): void;
+
     public function deleteUnusedTokens(): int;
 
     /** @param Authenticatable|ISanctumUser $user */
