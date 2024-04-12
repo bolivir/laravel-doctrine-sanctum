@@ -58,6 +58,19 @@ class AccessTokenRepository implements IAccessTokenRepository
         return null;
     }
 
+    public function deleteTokensByAbility(string $ability): void
+    {
+        $expr = $this->em->getExpressionBuilder();
+
+        $this->em
+            ->createQueryBuilder()
+            ->delete($this->tokenModel, 'ac')
+            ->where($expr->like('ac.abilities', ':ability'))
+            ->getQuery()
+            ->setParameter(':ability', "%\"{$ability}\"%")
+            ->execute();
+    }
+
     public function deleteUnusedTokens(): int
     {
         if ($this->unusedTokenTTL > 0) {
