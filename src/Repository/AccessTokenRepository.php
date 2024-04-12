@@ -67,7 +67,7 @@ class AccessTokenRepository implements IAccessTokenRepository
             ->delete($this->tokenModel, 'ac')
             ->where($expr->like('ac.abilities', ':ability'))
             ->getQuery()
-            ->setParameter(':ability', "%{$ability}%")
+            ->setParameter(':ability', "%\"{$ability}\"%")
             ->execute();
     }
 
