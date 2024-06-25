@@ -45,6 +45,7 @@ class Guard
             if (
                 !$accessToken
                 || !$this->hasValidProvider($accessToken->owner())
+                || (null !== $accessToken->expiresAt() && Carbon::instance($accessToken->expiresAt())->isPast())
                 || (
                     $this->expiration
                     && Carbon::instance($accessToken->createdAt())->lte(now()->subMinutes($this->expiration))

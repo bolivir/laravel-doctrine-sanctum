@@ -73,6 +73,13 @@ trait TAccessToken
      */
     protected ISanctumUser $owner;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime|null
+     */
+    protected ?\DateTime $expiresAt = null;
+
     public function can($ability): bool
     {
         return \in_array('*', $this->abilities, true)
@@ -92,6 +99,11 @@ trait TAccessToken
     public function changeCreatedAt(\DateTime $date): void
     {
         $this->createdAt = $date;
+    }
+
+    public function changeExpiresAt(?\DateTime $date): void
+    {
+        $this->expiresAt = $date;
     }
 
     public function createdAt(): ?\DateTime
@@ -147,5 +159,10 @@ trait TAccessToken
     public function abilities(): array
     {
         return $this->abilities;
+    }
+
+    public function expiresAt(): ?\DateTime
+    {
+        return $this->expiresAt;
     }
 }

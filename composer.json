@@ -3,10 +3,10 @@
     "description": "Laravel doctrine integration for the official laravel-sanctum package",
     "type": "library",
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "ext-json": "*",
         "laravel-doctrine/orm": "^2.0.0",
-        "laravel/sanctum": "^v2.0",
+        "laravel/sanctum": "^v3.0",
         "ramsey/uuid-doctrine": "^2.0.0"
     },
     "require-dev": {

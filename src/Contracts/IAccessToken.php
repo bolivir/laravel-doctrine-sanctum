@@ -23,6 +23,8 @@ interface IAccessToken extends HasAbilities
 
     public function changeCreatedAt(\DateTime $date): void;
 
+    public function changeExpiresAt(?\DateTime $date): void;
+
     public function createdAt(): ?\DateTime;
 
     public function changeOwner(ISanctumUser $user): void;
@@ -42,4 +44,6 @@ interface IAccessToken extends HasAbilities
 
     /** @return array<string> */
     public function abilities(): array;
+
+    public function expiresAt(): ?\DateTime;
 }
