@@ -10,6 +10,7 @@ services:
     image: 'redis:alpine'
 
   mysql:
+    platform: linux/amd64
     image: 'mysql:5.7'
     working_dir: /application
     volumes:

@@ -49,4 +49,20 @@ class SecurityTest extends TestCase
 
         $response->assertStatus(302);
     }
+
+    public function testApiLoginWithSpecificExpireDateShows401Status()
+    {
+        /** @var IAccessTokenRepository $accessTokenRepository */
+        $user = $this->createUser();
+        $accessTokenRepository = app()->get(IAccessTokenRepository::class);
+        $token = $accessTokenRepository->createToken($user, 'phpunit');
+        $currentUserToken = $token->accessToken;
+        $currentUserToken->changeExpiresAt(new \DateTime('-1 hour'));
+
+        $accessTokenRepository->save($currentUserToken);
+
+        $this->getJson('/api/user', [
+            'Authorization' => 'Bearer '.$token->plainTextToken,
+        ])->assertStatus(401);
+    }
 }
