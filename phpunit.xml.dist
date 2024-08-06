@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-        backupGlobals="false"
-        backupStaticAttributes="false"
-        beStrictAboutTestsThatDoNotTestAnything="true"
-        beStrictAboutOutputDuringTests="true"
-        bootstrap="vendor/autoload.php"
-        colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        failOnRisky="true"
-        failOnWarning="true"
-        processIsolation="true"
-        stopOnError="false"
-        stopOnFailure="false"
-        verbose="true"
->
-    <php>
-        <env name="APP_KEY" value="base64:130cfe485eb38ad64f3a57af4cbcff13d31af75b2491f821e2033101d62dc1cd"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
-        <env name="DB_FOREIGN_KEYS" value="true"/>
-    </php>
-    <testsuites>
-        <testsuite name="Test Suite">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
-    </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" beStrictAboutTestsThatDoNotTestAnything="true" beStrictAboutOutputDuringTests="true" bootstrap="vendor/autoload.php" colors="true" failOnRisky="true" failOnWarning="true" processIsolation="true" stopOnError="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.3/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+  <php>
+    <env name="APP_KEY" value="base64:130cfe485eb38ad64f3a57af4cbcff13d31af75b2491f821e2033101d62dc1cd"/>
+    <env name="DB_CONNECTION" value="sqlite"/>
+    <env name="DB_DATABASE" value=":memory:"/>
+    <env name="DB_FOREIGN_KEYS" value="true"/>
+  </php>
+  <testsuites>
+    <testsuite name="Test Suite">
+      <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
