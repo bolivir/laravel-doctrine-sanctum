@@ -172,4 +172,9 @@ class TestUser implements ISanctumUser, Jsonable, Arrayable
     {
         // TODO: Implement getRememberTokenName() method.
     }
+
+    public function getAuthPasswordName()
+    {
+        // TODO: Implement getAuthPasswordName() method.
+    }
 }
