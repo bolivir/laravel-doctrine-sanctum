@@ -11,6 +11,7 @@ Version | Supported Sanctum Version | Supported Laravel-Doctrine ORM Version
 ~2.0 | ^2.0 | ^2.0
 ~3.0 | ^3.0 | ^2.0
 ~4.0 | ^4.0 | ^2.0
+~5.0 | ^4.0 | ^3.0
 
 # Installation
 Start by installing the package with the following command:

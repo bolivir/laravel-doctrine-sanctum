@@ -1,5 +1,6 @@
 {
     "name": "bolivir/laravel-doctrine-sanctum",
+    "version": "5.0.0",
     "description": "Laravel doctrine integration for the official laravel-sanctum package",
     "type": "library",
     "require": {
