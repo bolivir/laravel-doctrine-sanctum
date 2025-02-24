@@ -17,7 +17,7 @@ use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestToken;
 
@@ -59,7 +59,7 @@ class AccessTokenRepositoryTest extends TestCase
 
     public function testCanFindToken(): void
     {
-        $repoMock = $this->createMock(ObjectRepository::class);
+        $repoMock = $this->createMock(EntityRepository::class);
         $tokenMock = $this->createMock(IAccessToken::class);
 
         $this->token->expects($this->once())

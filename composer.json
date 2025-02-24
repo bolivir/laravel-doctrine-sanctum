@@ -1,11 +1,12 @@
 {
     "name": "bolivir/laravel-doctrine-sanctum",
+    "version": "5.0.0",
     "description": "Laravel doctrine integration for the official laravel-sanctum package",
     "type": "library",
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "laravel-doctrine/orm": "^2.0.0",
+        "laravel-doctrine/orm": "^3.0.0",
         "laravel/sanctum": "^v4.0",
         "ramsey/uuid-doctrine": "^2.0.0"
     },

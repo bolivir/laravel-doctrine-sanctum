@@ -18,45 +18,24 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class TestUser implements ISanctumUser, Jsonable, Arrayable
 {
     use HasApiTokens;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="uuid", unique=true)
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     *
-     * @var string
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     *
-     * @var string
-     */
+    #[ORM\Column(type: 'string', unique: true)]
     protected $username;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     *
-     * @var string
-     */
+    #[ORM\Column(type: 'string', unique: true)]
     protected $email;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @var string
-     */
+    #[ORM\Column(type: 'string')]
     protected $password;
 
     public function toJson($options = 0)

@@ -21,8 +21,8 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Illuminate\Auth\RequestGuard;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -79,6 +79,7 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
 
     protected function configureMiddleware(): void
     {
+        /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
         $kernel->prependToMiddlewarePriority(EnsureFrontendRequestsAreStateful::class);
     }

@@ -21,7 +21,7 @@ use Illuminate\Support\Arr;
 
 class Guard
 {
-    public function __construct(private AuthenticationFactory $authenticationFactory, private IAccessTokenRepository $accessTokenRepository, private ?int $expiration = null, private ?string $provider = null)
+    public function __construct(private readonly AuthenticationFactory $authenticationFactory, private readonly IAccessTokenRepository $accessTokenRepository, private readonly ?int $expiration = null, private readonly ?string $provider = null)
     {
     }
 
@@ -45,7 +45,7 @@ class Guard
             if (
                 !$accessToken
                 || !$this->hasValidProvider($accessToken->owner())
-                || (null !== $accessToken->expiresAt() && Carbon::instance($accessToken->expiresAt())->isPast())
+                || ($accessToken->expiresAt() instanceof \DateTime && Carbon::instance($accessToken->expiresAt())->isPast())
                 || (
                     $this->expiration
                     && Carbon::instance($accessToken->createdAt())->lte(now()->subMinutes($this->expiration))
