@@ -19,6 +19,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     // Define what rule sets will be applied
     $rectorConfig->import(SetList::CODE_QUALITY);
-    $rectorConfig->import(LevelSetList::UP_TO_PHP_80);
+    $rectorConfig->import(LevelSetList::UP_TO_PHP_82);
     $rectorConfig->phpstanConfig(getcwd().'/phpstan.neon');
 };

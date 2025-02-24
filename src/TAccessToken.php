@@ -12,72 +12,36 @@ declare(strict_types=1);
 namespace Bolivir\LaravelDoctrineSanctum;
 
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 
 trait TAccessToken
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="uuid", unique=true)
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     *
-     * @var string|null
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @var string
-     */
+    #[ORM\Column(type: 'string')]
     protected string $name;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     *
-     * @var string
-     */
+    #[ORM\Column(type: 'string', unique: true)]
     protected string $token;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     *
-     * @var array
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     protected array $abilities = [];
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTime|null
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected \DateTime $lastUsedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTime|null
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected \DateTime $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser", cascade={"persist"})
-     *
-     * @var ISanctumUser|null
-     */
+    #[ORM\ManyToOne(targetEntity: ISanctumUser::class, cascade: ['persist'])]
     protected ISanctumUser $owner;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTime|null
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected ?\DateTime $expiresAt = null;
 
     public function can($ability): bool

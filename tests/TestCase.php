@@ -50,6 +50,7 @@ class TestCase extends OrchestraTestCase
         ]);
 
         $config->set('auth.providers.users.driver', 'doctrine');
+        $config->set('auth.providers.users.model', TestUser::class);
         $config->set('sanctum_orm.doctrine.models.token', TestToken::class);
         $config->set('sanctum_orm.doctrine.models.user', TestUser::class);
         $config->set('sanctum_orm.doctrine.manager', 'default');

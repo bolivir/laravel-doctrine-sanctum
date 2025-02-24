@@ -16,6 +16,7 @@ use Bolivir\LaravelDoctrineSanctum\Repository\AccessTokenRepository;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Illuminate\Console\OutputStyle;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -63,7 +64,7 @@ class DeleteUnusedTokensCommandTest extends TestCase
         $this->queryBuilder
             ->method('where')->willReturnSelf();
 
-        $this->query = $this->createMock(AbstractQuery::class);
+        $this->query = $this->createMock(Query::class);
         $this->tokenRepository = new AccessTokenRepository(
             $this->entityManager,
             TestToken::class,

@@ -16,11 +16,7 @@ use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\TAccessToken;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class TestTokens.
- *
- * @ORM\Entity
- */
+#[ORM\Entity]
 class TestToken implements IAccessToken
 {
     use TAccessToken;
