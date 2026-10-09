@@ -60,7 +60,7 @@ class TestUser implements ISanctumUser, Jsonable, Arrayable
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string) $this->id;
     }
 
     /**

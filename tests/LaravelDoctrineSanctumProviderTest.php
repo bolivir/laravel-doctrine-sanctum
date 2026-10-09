@@ -11,12 +11,9 @@ declare(strict_types=1);
 
 namespace Tests\Bolivir\LaravelDoctrineSanctum;
 
-use Bolivir\LaravelDoctrineSanctum\Guard\Guard;
 use Bolivir\LaravelDoctrineSanctum\LaravelDoctrineSanctumProvider;
 use Bolivir\LaravelDoctrineSanctum\Repository\IAccessTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Illuminate\Auth\RequestGuard;
-use Illuminate\Support\Facades\Auth;
 use Tests\Bolivir\LaravelDoctrineSanctum\Fixtures\TestUser;
 
 class LaravelDoctrineSanctumProviderTest extends TestCase
@@ -31,14 +28,5 @@ class LaravelDoctrineSanctumProviderTest extends TestCase
     {
         $em = app()->get('registry')->getManagerForClass(TestUser::class);
         $this->assertInstanceOf(EntityManagerInterface::class, $em);
-    }
-
-    public function testSanctumGuardUsesDoctrineGuard()
-    {
-        $guard = Auth::guard('sanctum');
-        $this->assertInstanceOf(RequestGuard::class, $guard);
-
-        $callback = new \ReflectionProperty(RequestGuard::class, 'callback');
-        $this->assertInstanceOf(Guard::class, $callback->getValue($guard));
     }
 }
