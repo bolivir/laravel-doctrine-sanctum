@@ -127,8 +127,6 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
     private function configureGuard()
     {
         Auth::resolved(function ($auth) {
-            // Laravel 13 binds extend() callbacks to the AuthManager, so capture what the
-            // callback needs instead of relying on `$this` being this provider.
             $createGuard = $this->createGuard(...);
 
             $auth->extend('sanctum', static fn ($app, $name, array $config) => tap($createGuard($auth, $config), static function ($guard) use ($app) {
