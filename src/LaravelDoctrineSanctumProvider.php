@@ -124,12 +124,20 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
         $this->app->alias(IAccessTokenRepository::class, 'sanctum.orm.services.token');
     }
 
-    private function configureGuard()
+    private function configureGuard(): void
     {
-        Auth::resolved(function ($auth) {
-            $auth->extend('sanctum', fn ($app, $name, array $config) => tap($this->createGuard($auth, $config), function ($guard) {
-                $this->app->refresh('request', $guard, 'setRequest');
-            }));
+        Auth::resolved(function ($auth): void {
+            // Laravel 13 rebinds anonymous closures passed to AuthManager::extend() to the
+            // AuthManager itself. A first-class callable is not anonymous, so `$this` keeps
+            // pointing at this provider.
+            $auth->extend('sanctum', $this->createSanctumGuard(...));
+        });
+    }
+
+    private function createSanctumGuard(Application $app, string $name, array $config): RequestGuard
+    {
+        return tap($this->createGuard($app['auth'], $config), function (RequestGuard $guard) use ($app): void {
+            $app->refresh('request', $guard, 'setRequest');
         });
     }
 
