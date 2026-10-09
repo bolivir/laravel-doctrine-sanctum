@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
 Route::middleware('auth:sanctum')
-    ->get('/api/user', function (Request $request) {
+    ->get('/api/user', static function (Request $request) {
         $user = $request->user();
 
         return response()->json($request->user());
     });
 
-Route::post('/api/token', function (Request $request) {
+Route::post('/api/token', static function (Request $request) {
     /** @var IAccessToken $tokenManager */
     $token = app()->get(IAccessToken::class);
     $request->validate([
@@ -43,6 +43,6 @@ Route::post('/api/token', function (Request $request) {
 });
 
 Route::name('login')
-    ->get('/login', function () {
+    ->get('/login', static function () {
         return response()->json(['content' => 'must login']);
     });
