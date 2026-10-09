@@ -127,8 +127,10 @@ class LaravelDoctrineSanctumProvider extends ServiceProvider
     private function configureGuard()
     {
         Auth::resolved(function ($auth) {
-            $auth->extend('sanctum', fn ($app, $name, array $config) => tap($this->createGuard($auth, $config), function ($guard) {
-                $this->app->refresh('request', $guard, 'setRequest');
+            $createGuard = $this->createGuard(...);
+
+            $auth->extend('sanctum', static fn ($app, $name, array $config) => tap($createGuard($auth, $config), static function ($guard) use ($app) {
+                $app->refresh('request', $guard, 'setRequest');
             }));
         });
     }

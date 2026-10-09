@@ -16,6 +16,22 @@ use Tests\Bolivir\LaravelDoctrineSanctum\TestCase;
 
 class SecurityTest extends TestCase
 {
+    public function testApiLoginWithValidTokenReturnsUser()
+    {
+        /** @var IAccessTokenRepository $accessTokenRepository */
+        $user = $this->createUser();
+        $accessTokenRepository = app()->get(IAccessTokenRepository::class);
+        $token = $accessTokenRepository->createToken($user, 'phpunit');
+
+        $this->getJson('/api/user', [
+            'Authorization' => 'Bearer '.$token->plainTextToken,
+        ])->assertStatus(200)->assertJson([
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+        ]);
+    }
+
     public function testApiLoginWithExpiredTokenShows401Status()
     {
         /** @var IAccessTokenRepository $accessTokenRepository */

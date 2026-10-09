@@ -27,7 +27,7 @@ class TestUser implements ISanctumUser, Jsonable, Arrayable
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    protected $id;
+    protected ?string $id = null;
 
     #[ORM\Column(type: 'string', unique: true)]
     protected $username;
@@ -56,9 +56,9 @@ class TestUser implements ISanctumUser, Jsonable, Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
