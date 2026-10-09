@@ -55,7 +55,7 @@ class Guard
             }
 
             if ($this->supportsTokens($accessToken->owner())) {
-                $accessToken->changeLastUsedAt(now());
+                $accessToken->changeLastUsedAt(Carbon::now());
 
                 return $this->accessTokenRepository->updateAccessToken($accessToken);
             }

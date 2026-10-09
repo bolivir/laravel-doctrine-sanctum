@@ -31,6 +31,9 @@ $config
             'syntax' => 'short',
         ],
         'comment_to_phpdoc' => true,
+        'declare_strict_types' => [
+            'strategy' => 'enforce',
+        ],
         'compact_nullable_typehint' => true,
         'doctrine_annotation_array_assignment' => [
             'operator' => '=',

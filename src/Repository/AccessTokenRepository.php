@@ -14,6 +14,7 @@ namespace Bolivir\LaravelDoctrineSanctum\Repository;
 use Bolivir\LaravelDoctrineSanctum\Contracts\IAccessToken;
 use Bolivir\LaravelDoctrineSanctum\Contracts\ISanctumUser;
 use Bolivir\LaravelDoctrineSanctum\NewAccessToken;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Str;
@@ -30,12 +31,12 @@ class AccessTokenRepository implements IAccessTokenRepository
         $plainTextToken = Str::random(80);
         /** @var IAccessToken $token */
         $token = new $this->tokenModel();
-        $token->changeCreatedAt(now());
+        $token->changeCreatedAt(Carbon::now());
         $token->changeName($name);
         $token->changeOwner($user);
         $token->changeToken(hash('sha256', $plainTextToken));
         $token->changeAbilities($abilities);
-        $token->changeLastUsedAt(now());
+        $token->changeLastUsedAt(Carbon::now());
         $this->save($token);
 
         return new NewAccessToken($token, $token->id().'|'.$plainTextToken);
@@ -101,7 +102,7 @@ class AccessTokenRepository implements IAccessTokenRepository
 
     public function updateAccessToken(IAccessToken $token)
     {
-        $token->changeLastUsedAt(now());
+        $token->changeLastUsedAt(Carbon::now());
         $token->owner()->withAccessToken($token);
         $this->save($token);
 
